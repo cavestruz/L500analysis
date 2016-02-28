@@ -13,12 +13,12 @@ derived_field_data = {}
 
 class DerivedField :
     '''This is general 'call' function that makes the class
-    callable. It simply redirets to _call_function right now, but this
+    callable. It simply redirects to _call_function right now, but this
     gives us flexibility to later add elif/switch statements to call
     different functions depending on what is needed
     '''
 
-    def __init__(self, dataobject=None, name=None, function=None,
+    def __init__(self, inputobject=None, name=None, function=None,
                  combine_function=None,
                  units=None, **kwargs) :
 
@@ -40,6 +40,7 @@ class DerivedField :
 
 
 class DerivedFieldCollection :
+    functions = derived_field_data
 
     def __init__( self, inputobject) :
         self.inputobject = inputobject

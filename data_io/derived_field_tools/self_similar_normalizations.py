@@ -1,13 +1,37 @@
 import L500analysis.utils.constants as constants
 from L500analysis.utils.utils import *
 
+def _self_similar_normalization(overdensity_ratio=None,
+                               overdensity_power=None,
+                               normalization_fit=None,
+                               mass_1e15=None,
+                               mass_power=None,
+                               redshift_dependence=None,
+                               redshift_dependence_power=None) :
+    '''
+    General calculation for self-similar normalization for thermodynamic variables
+    '''
+
+    return overdensity_ratio**overdensity_power * \
+        normalization_fit * \
+        mass_1e15 ** mass_power * \
+        redshift_dependence ** redshift_dependence_power        
+
 def calculate_T_normalization_wrt_critical(Mvir=None, delta=500, aexp=None,
                    OmM=constants.omega_m, OmL=constants.omega_l,
-                   hubble=constants.hubble) :
+                   hubble=constants.hubble, **kwargs) :
     '''
     Returns self similar value of temperature in keV with respect to
     overdensity $\delta_{critical}$.
     '''
+
+    if Mvir == None :
+        calculate_Mvir_input = { 'M_star': kwargs.pop('M_star'),
+                                 'M_gas': kwargs.pop('M_gas'),
+                                 'M_dark': kwargs.pop('Mdark'),
+                                 'r_mid': kwargs.pop('r_mid') }
+        Mvir = calculate_Mvir(calculate_Mvir_input)
+
 
     self_similar_normalization_input = {
             'overdensity_ratio': delta/500.,
@@ -19,12 +43,12 @@ def calculate_T_normalization_wrt_critical(Mvir=None, delta=500, aexp=None,
             'redshift_dependence_power': 2./3
             }
 
-    return self_similar_normalization(**self_similar_normalization_input)
+    return _self_similar_normalization(**self_similar_normalization_input)
 
 
 def calculate_T_normalization_wrt_mean(Mvir=None, delta=200, aexp=None,
                    OmM=constants.omega_m, OmL=constants.omega_l,
-                   hubble=constants.hubble) :
+                   hubble=constants.hubble, **kwargs) :
     '''
     Returns self similar value of temperature in keV with respect to
     overdensity $\delta_{mean}$.
@@ -40,25 +64,9 @@ def calculate_T_normalization_wrt_mean(Mvir=None, delta=200, aexp=None,
             'redshift_dependence_power': -1.
             }
 
-    return self_similar_normalization(**self_similar_normalization_input)
+    return _self_similar_normalization(**self_similar_normalization_input)
 
 
 
 
 
-def self_similar_normalization(overdensity_ratio=None,
-                               overdensity_power=None,
-                               normalization_fit=None,
-                               mass_1e15=None,
-                               mass_power=None,
-                               redshift_dependence=None,
-                               redshift_dependence_power=None) :
-    '''
-    General calculation for self-similar normalization for thermodynamic variables
-    '''
-
-    return overdensity_ratio**overdensity_power * \
-        normalization_fit * \
-        mass_1e15 ** mass_power * \
-        redshift_dependence ** redshift_dependence_power
-        
