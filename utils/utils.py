@@ -21,3 +21,17 @@ def calculate_Ez(aexp=None,redshift=None,
     if redshift == None : redshift = aexp2redshift(aexp)
 
     return np.sqrt(OmM*float(1.+redshift)**3+OmL)
+
+
+def calculate_rhoc(aexp=None,
+                   OmM=const.omega_m,
+                   OmL=const.omega_l) :
+
+    Ez = calculate_Ez(aexp, OmM, OmL)
+
+    return const.rhoc_0 * Ez**2
+
+def calculate_rhom(aexp=None, 
+                   OmM=const.omega_m) :
+    
+    return const.rho_0 * OmM / aexp**3
