@@ -60,3 +60,16 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Emacs
+*~
+
+# database
+*.db
+
+# pdf figures
+*.pdf
+
+# zipped and tarball files
+*.gz
+*.tar
