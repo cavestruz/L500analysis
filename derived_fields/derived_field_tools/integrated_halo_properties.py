@@ -9,7 +9,7 @@ def calculate_virial_mass(radii_kpc_h=None, M_tot=None,
                           aexp=None, delta=None) :
     
     cutoff_density = _calculate_cutoff_background_density(delta=delta,aexp=aexp)
-    
+    pass
 
 
 def calculate_virial_radius(radii_kpc_h=None, M_tot=None,
@@ -18,12 +18,14 @@ def calculate_virial_radius(radii_kpc_h=None, M_tot=None,
 
     calculate_enclosed_density( radii_kpc_h=radii_kpc_h,
                                 M_tot=None )
+    pass
 
 def calculate_enclosed_density() :
     pass
 
 def interpolate_profile() :
     pass
+
 
 def _calculate_cutoff_background_density(delta=None,aexp=None) :
     '''Calculates cutoff background density in h^2Msun/kpc^3'''

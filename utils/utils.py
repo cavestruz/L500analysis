@@ -35,3 +35,16 @@ def calculate_rhom(aexp=None,
                    OmM=const.omega_m) :
     
     return const.rho_0 * OmM / aexp**3
+
+def calculate_Omz(aexp=None,OmM=const.omega_m,
+                  OmL=const.omega_l) :
+
+    Ez = calculate_Ez(aexp=aexp,OmM=OmM,OmL=OmL)
+    return OmM/aexp**3/Ez**2.
+
+def calculate_bryannorman98_overdensity(Omz=None) :
+
+    return 18.0*np.pi**2+82.0*(Omz-1)-39.0*(Omz-1)**2
+
+def K2keV(TinKelvin=None) :
+    return TinKelvin*const.kb

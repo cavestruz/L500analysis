@@ -1,14 +1,11 @@
 '''Load database, match to aexps needed'''
 import sys
-sys.path.append('../')
 import numpy as np
 import L500analysis.caps.io.reader as db
 import L500analysis.utils.utils as ut
-from collections import defaultdict, OrderedDict
-
 
 class LoadDataBase :
-    def __init__(self, aexp=None, db_name="L500_NR_0", db_dir=None, 
+    def __init__(self, aexp=None, db_name="L500_NR_0", db_dir='../simulation_databases/',
                  profiles_list=None, 
                  halo_properties_list=None) :
         '''

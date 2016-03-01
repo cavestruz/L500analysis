@@ -1,7 +1,7 @@
 ''' Create derived profiles from the database stored profiles '''
 
-from derived_field_functions import *
-from derived_fields import *
+from L500analysis.derived_fields.derived_field_functions import *
+from L500analysis.derived_fields.derived_fields import *
 
 class GetDerivedFields :
     def __init__(self, loaded_data_object=None, 

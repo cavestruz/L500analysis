@@ -17,16 +17,22 @@ def _self_similar_normalization(overdensity_ratio=None,
         mass_1e15 ** mass_power * \
         redshift_dependence ** redshift_dependence_power        
 
-def calculate_T_normalization_wrt_critical(Mvir=None, delta=500, aexp=None,
+def calculate_T_normalization(Mvir=None, aexp=None, delta=None,
                    OmM=constants.omega_m, OmL=constants.omega_l,
                    hubble=constants.hubble, **kwargs) :
     '''
     Returns self similar value of temperature in keV with respect to
-    overdensity $\delta_{critical}$.
+    overdensity $\delta_{critical}$ or $\delta_{mean}$ 
+    kwargs 
+    ---------
+    delta: '200m', '500c', etc.
     '''
+    
+    delta_type = delta[-1]
+    delta_value = float(delta[:-1])
 
-    self_similar_normalization_input = {
-            'overdensity_ratio': delta/500.,
+    self_similar_normalization_input_crit = {
+            'overdensity_ratio': delta_value/500,
             'overdensity_power': 1./3,
             'normalization_fit': 11.055*(constants.mu/0.59)*(hubble/0.7)**(2./3.),
             'mass_1e15': Mvir/1e15,
@@ -35,28 +41,23 @@ def calculate_T_normalization_wrt_critical(Mvir=None, delta=500, aexp=None,
             'redshift_dependence_power': 2./3
             }
 
-    return _self_similar_normalization(**self_similar_normalization_input)
-
-
-def calculate_T_normalization_wrt_mean(Mvir=None, delta=200, aexp=None,
-                   OmM=constants.omega_m, OmL=constants.omega_l,
-                   hubble=constants.hubble, **kwargs) :
-    '''
-    Returns self similar value of temperature in keV with respect to
-    overdensity $\delta_{mean}$.
-    '''
-
-    self_similar_normalization_input = {
-            'overdensity_ratio': delta/200.,
+    self_similar_normalization_input_mean = {
+            'overdensity_ratio': delta_value/200,
             'overdensity_power': 1./3,
-            'normalization_fit': 5.2647*(mu/0.59)*(hubble/0.7)**(2./3.)*(OmM/0.27)**(1./3.),
+            'normalization_fit': 5.2647*(constants.mu/0.59)*(constants.hubble/0.7)**(2./3.)*(OmM/0.27)**(1./3.),
             'mass_1e15': Mvir/1e15,
             'mass_power': 2./3,
             'redshift_dependence': aexp,
             'redshift_dependence_power': -1.
             }
+    
+    self_similar_normalization_input = {'c':self_similar_normalization_input_crit,
+                                        'm':self_similar_normalization_input_mean
+                                            }
+                                            
+    return _self_similar_normalization(**self_similar_normalization_input[delta_type])
 
-    return _self_similar_normalization(**self_similar_normalization_input)
+
 
 
 

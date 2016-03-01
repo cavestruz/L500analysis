@@ -4,8 +4,14 @@ from derived_field_functions import *
 aexps = [1.0]
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
-profiles_list = ['M_dark', 'M_gas', 'M_star','M_tot', 'r_mid', 'R/R500c']
-halo_properties_list=['r500c']
+
+profiles_list = ['T_mw', 'r_mid', 
+                 'vel_gas_rad_std', 'vel_gas_tan_std',
+                 'vel_gas_rad_avg', 'vel_gas_tan_avg',
+                 'Tnt/T500c','Ttot/T500c',#,'T_mw/T500c',
+                 'R/R500c']
+
+halo_properties_list=['r500c','M_total_500c']
 
 
 for aexp in aexps :
@@ -15,8 +21,5 @@ for aexp in aexps :
                             halo_properties_list=halo_properties_list)
     hid = cldata['halo_ids'][0]
 
-    print 'M_gas:', cldata['M_gas'][hid]
-    print 'M_dark:', cldata['M_dark'][hid]
-    print 'M_tot:', cldata['M_tot'][hid]
     print 'R/R500c:', cldata['R/R500c'][hid]
-
+    print 'Tnt/T500c', max(cldata['Tnt/T500c'][hid])
