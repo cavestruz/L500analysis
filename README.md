@@ -1,5 +1,7 @@
 Author: Camille Avestruz
+
 Email: avestruz@uchicago.edu
+
 Date: 2016-02-07
 --------------
 
