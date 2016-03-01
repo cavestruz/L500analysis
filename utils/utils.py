@@ -13,6 +13,12 @@ def aexp2redshift(aexp=None) :
 
     return max(1./float(aexp) - 1, 0.0)
 
+def check_redshift_kwargs(aexp=None, redshift=None) :
+    if redshift == None : return aexp2redshift(aexp)
+    elif aexp != None :
+        assert(redshift == aexp2redshift(aexp))
+    else :  return redshift   
+
 def calculate_Ez(aexp=None,redshift=None,
                  OmM=const.omega_m,
                  OmL=const.omega_l) :
@@ -46,5 +52,3 @@ def calculate_bryannorman98_overdensity(Omz=None) :
 
     return 18.0*np.pi**2+82.0*(Omz-1)-39.0*(Omz-1)**2
 
-def K2keV(TinKelvin=None) :
-    return TinKelvin*const.kb

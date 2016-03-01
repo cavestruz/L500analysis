@@ -8,8 +8,8 @@ Date: 2016-02-07
 This is the repository for doing basic analysis with the Omega 500
 dataset stored in the database.  It includes Kaylea's python wrapper
 to query profiles and halo properties (in L500analysis/caps), and
-basic data IO including the framework to derive any fields the data_io
-package combines basic reading of database profiles and halo
+basic data IO including the framework to derive any fields.  The
+data_io package combines basic reading of database profiles and halo
 properties with derived profiles and properties.  Derived field
 calculations are done in the derived_fields package.  Any additional
 code should be added to the appropriate subdirectory structure in
