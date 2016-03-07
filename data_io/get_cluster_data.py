@@ -41,7 +41,7 @@ class GetClusterData :
         elif field in self.ldb.available_halo_properties_list :
             return self.ldb.halo_properties[field]
         elif field in self.ldb.derived_halo_properties_list :
-            return self.df.derived_halo_properties[field]
+            return self.df.halo_properties[field]
         elif field=='halo_ids' :
             return self.ldb.halo_ids
         else :
