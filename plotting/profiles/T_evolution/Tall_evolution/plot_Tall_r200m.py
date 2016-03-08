@@ -14,20 +14,20 @@ db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
 profiles_list = ['T_mw', 'r_mid', 
                  'vel_gas_rad_std', 'vel_gas_tan_std',
                  'vel_gas_rad_avg', 'vel_gas_tan_avg',
-                 'Tnt/T500c','Ttot/T500c','T_mw/T500c',
-                 'R/R500c']
+                 'Tnt/T200m','Ttot/T200m','T_mw/T200m',
+                 'R/R200m']
 
-halo_properties_list=['r500c','M_total_500c','nu_500c']
+halo_properties_list=['r200m','M_total_200m','nu_200m']
 
 
-Tratio=r"$\tilde{T}=T(R)/T_{500c}$"
+Tratio=r"$\tilde{T}=T(R)/T_{200m}$"
 fTz0=r"$\tilde{T}/\tilde{T}(z=0)$"
 
-pa = PlotAxes(figname='Tall_r500c',
+pa = PlotAxes(figname='Tall_r200m',
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
               axes_labels=[Tratio,fTz0],
-              xlabel=r"$R/R_{500c}$",
-              xlim=(0.2,4),
+              xlabel=r"$R/R_{200m}$",
+              xlim=(0.2,2.0),
               ylims=[(0.1,1.1),(0.8,1.55)])
 
 Tmw={}
@@ -45,9 +45,9 @@ for aexp in aexps :
                             profiles_list=profiles_list,
                             halo_properties_list=halo_properties_list)
 
-    Tmw[aexp] = calculate_profiles_mean_variance(cldata['T_mw/T500c'])
-    Tnt[aexp] = calculate_profiles_mean_variance(cldata['Tnt/T500c'])
-    Ttot[aexp] = calculate_profiles_mean_variance(cldata['Ttot/T500c'])
+    Tmw[aexp] = calculate_profiles_mean_variance(cldata['T_mw/T200m'])
+    Tnt[aexp] = calculate_profiles_mean_variance(cldata['Tnt/T200m'])
+    Ttot[aexp] = calculate_profiles_mean_variance(cldata['Ttot/T200m'])
 
     pa.axes[Tratio].plot( rbins, Tmw[aexp]['mean'],color=color(aexp),ls='-',
                              label="$z=%3.1f$" % aexp2redshift(aexp))
