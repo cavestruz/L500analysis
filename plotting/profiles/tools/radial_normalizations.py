@@ -16,5 +16,5 @@ add_derived_field('R/R500c',function=_radial_normalization,
 
 
 add_derived_field('R/R200m',function=_radial_normalization,
-                  combine_function=normalize_profile, r_delta_type='r200m'
+                  combine_function=normalize_profile, r_delta='r200m'
                   )

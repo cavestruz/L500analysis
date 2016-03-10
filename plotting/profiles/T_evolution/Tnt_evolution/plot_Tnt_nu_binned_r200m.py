@@ -3,21 +3,22 @@ from L500analysis.utils.utils import aexp2redshift
 from L500analysis.plotting.tools.figure_formatting import *
 from L500analysis.plotting.profiles.tools.profiles_percentile \
     import *
+from L500analysis.plotting.profiles.tools.select_profiles \
+    import *
 from L500analysis.utils.constants import rbins
 from derived_field_functions import *
 
 color = matplotlib.cm.afmhot_r
-matplotlib.rcParams['legend.handlelength'] = 0
-matplotlib.rcParams['legend.numpoints'] = 1
-matplotlib.rcParams['legend.fontsize'] = 12
 aexps = [1.0,0.9,0.8,0.7,0.6,0.5,0.45,0.4,0.35]
+nu_threshold = [2.2,2.7]
+nu_label = r"%0.1f$\leq\nu_{200m}\leq$%0.1f"%(nu_threshold[0],nu_threshold[1])
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
 
 profiles_list = ['T_mw', 'r_mid', 
                  'vel_gas_rad_std', 'vel_gas_tan_std',
                  'vel_gas_rad_avg', 'vel_gas_tan_avg',
-                 'Tnt/T200m','Ttot/T200m','T_mw/T200m',
+                 'Tnt/T200m',
                  'R/R200m']
 
 halo_properties_list=['r200m','M_total_200m','nu_200m']
@@ -26,7 +27,7 @@ halo_properties_list=['r200m','M_total_200m','nu_200m']
 Tratio=r"$\tilde{T}=T(R)/T_{200m}$"
 fTz0=r"$\tilde{T}/\tilde{T}(z=1)$"
 
-pa = PlotAxes(figname='Tall_r200m',
+pa = PlotAxes(figname='Tnt_r200m_nu%0.1f'%nu_threshold[0],
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
               axes_labels=[Tratio,fTz0],
               xlabel=r"$R/R_{200m}$",
@@ -34,15 +35,9 @@ pa = PlotAxes(figname='Tall_r200m',
               ylims=[(0.1,1.19),(0.6,1.4)])
 
 Tmw={}
-Tnt={}
-Ttot={}
-Tplots = [Tmw,Tnt,Ttot]
-clkeys = ['T_mw/T200m','Tnt/T200m','Ttot/T200m']
-linestyles = [':','-.','-']
-Tmw_frac={}
-Tnt_frac={}
-Ttot_frac={}
-
+Tplots = [Tmw]
+clkeys = ['Tnt/T200m']
+linestyles = ['-']
 
 for aexp in aexps :
     cldata = GetClusterData(aexp=aexp,db_name=db_name,
@@ -50,16 +45,21 @@ for aexp in aexps :
                             profiles_list=profiles_list,
                             halo_properties_list=halo_properties_list)
 
-    for Tplot, key in zip(Tplots,clkeys) :
-        Tplot[aexp] = calculate_profiles_mean_variance(cldata[key])
+    # print aexp
+    # print min(cldata['nu_200m'].values())
+    # print max(cldata['nu_200m'].values())
+    # continue
+    nu_cut_hids = nu_cut(nu=cldata['nu_200m'], threshold=nu_threshold)
 
-    pa.axes[Tratio].plot( rbins, Tmw[aexp]['mean'],color=color(aexp),ls=':' )
-    pa.axes[Tratio].plot( rbins, Tnt[aexp]['mean'],color=color(aexp),ls='-.' )
-    pa.axes[Tratio].plot( rbins, Ttot[aexp]['mean'],color=color(aexp),ls='-',
+    for Tplot, key in zip(Tplots,clkeys) :
+        pruned_profiles = prune_dict(d=cldata[key],k=nu_cut_hids)
+        Tplot[aexp] = calculate_profiles_mean_variance(pruned_profiles)
+
+    pa.axes[Tratio].plot( rbins, Tmw[aexp]['mean'],color=color(aexp),ls='-',
                              label="$z=%3.1f$" % aexp2redshift(aexp))
 
 
-pa.axes[Tratio].fill_between(rbins, Ttot[0.5]['down'], Ttot[0.5]['up'], 
+pa.axes[Tratio].fill_between(rbins, Tmw[0.5]['down'], Tmw[0.5]['up'], 
                                  color=color(0.5), zorder=0)
 
     
@@ -76,10 +76,15 @@ for aexp in aexps :
         pa.axes[fTz0].plot( rbins, fractional_evolution['mean'],
                             color=color(aexp),ls=ls) 
                                                  
-
+pa.axes[Tratio].annotate(nu_label, xy=(.75, .75), xytext=(.3, 1.1),
+                         )
 pa.axes[Tratio].tick_params(labelsize=12)
 pa.axes[Tratio].tick_params(labelsize=12)
 pa.axes[fTz0].set_yticks(arange(0.6,1.4,0.2))
+
+matplotlib.rcParams['legend.handlelength'] = 0
+matplotlib.rcParams['legend.numpoints'] = 1
+matplotlib.rcParams['legend.fontsize'] = 12
 pa.set_legend(axes_label=Tratio,ncol=3,loc='best', frameon=False)
 pa.color_legend_texts(axes_label=Tratio)
 

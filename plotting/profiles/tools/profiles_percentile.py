@@ -8,16 +8,16 @@ def calculate_profiles_percentile( profiles, percentile=50 ) :
 
 def calculate_profiles_mean_variance( profiles,mean=None ) :
 
-    if mean == None : mean = calculate_profiles_percentile(profiles)
-    var = np.var(np.array(profiles.values()), axis=0)
+    if mean == None : mean = np.mean(profiles.values(),axis=0)
+    var = np.var(np.array(profiles.values()),axis=0)
 
-    return {'var':var, 'up': var+mean, 'down':var-mean}
+    return {'mean':mean, 'var':var, 'up': mean-var, 'down':mean-var}
 
 def calculate_profiles_division_mean_variance( profiles1, 
                                                profiles2 ) :
 
-    p1mean = calculate_profiles_percentile(profiles1) 
-    p2mean = calculate_profiles_percentile(profiles2) 
+    p1mean = np.mean(profiles1) 
+    p2mean = np.mean(profiles2) 
     mean = p1mean/p2mean
     
     var1 = calculate_profiles_mean_variance(profiles1,p1mean)['var']
@@ -26,10 +26,10 @@ def calculate_profiles_division_mean_variance( profiles1,
 
     return {'mean':mean, 'var':var, 'up':mean+var, 'down':mean-var}
 
-def get_profiles_mean_variance( mean_profile1=None,
-                                mean_profile2=None,
-                                var_profile1=None,
-                                var_profile2=None ) :
+def get_profiles_division_mean_variance( mean_profile1=None,
+                                         mean_profile2=None,
+                                         var_profile1=None,
+                                         var_profile2=None ) :
     
     mean = mean_profile1 / mean_profile2
     var = mean_profile1*var_profile2 + mean_profile2*var_profile1

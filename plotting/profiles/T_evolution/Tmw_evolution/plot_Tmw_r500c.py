@@ -24,7 +24,7 @@ halo_properties_list=['r500c','M_total_500c','nu_500c']
 Tratio=r"$\tilde{T}=T(R)/T_{500c}$"
 fTz0=r"$\tilde{T}/\tilde{T}(z=1)$"
 
-pa = PlotAxes(figname='Ttot_r500c',
+pa = PlotAxes(figname='Tmw_r500c',
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
               axes_labels=[Tratio,fTz0],
               xlabel=r"$R/R_{500c}$",
