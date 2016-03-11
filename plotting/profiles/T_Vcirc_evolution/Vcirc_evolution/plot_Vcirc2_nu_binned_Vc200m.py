@@ -10,31 +10,32 @@ from derived_field_functions import *
 
 color = matplotlib.cm.afmhot_r
 aexps = [1.0,0.9,0.8,0.7,0.6,0.5,0.45,0.4,0.35]
-nu_threshold = [2.2,2.7]
+nu_threshold = [1.3,2]
 nu_label = r"%0.1f$\leq\nu_{200m}\leq$%0.1f"%(nu_threshold[0],nu_threshold[1])
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
 
-profiles_list = ['T_mw', 'r_mid', 
-                 'T_mw/T200m',
+profiles_list = ['r_mid', 
+                 'Vcirc2_Vc200m',
+                 'M_dark', 'M_star', 'M_gas',
                  'R/R200m']
 
 halo_properties_list=['r200m','M_total_200m','nu_200m']
 
 
-Tratio=r"$\tilde{T}=T(R)/T_{200m}$"
-fTz0=r"$\tilde{T}/\tilde{T}(z=1)$"
+Vcirc2ratioVc200m=r"$\tilde{V}=V^2_{c}/V^2_{c,200m}$"
+fVcz1=r"$\tilde{V}/\tilde{V}(z=1)$"
 
-pa = PlotAxes(figname='Tmw_r200m_nu%0.1f'%nu_threshold[0],
+pa = PlotAxes(figname='Vcirc2_Vc200m_nu%0.1f'%nu_threshold[0],
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
-              axes_labels=[Tratio,fTz0],
+              axes_labels=[Vcirc2ratioVc200m,fVcz1],
               xlabel=r"$R/R_{200m}$",
               xlim=(0.2,2),
-              ylims=[(0.1,1.19),(0.6,1.4)])
+              ylims=[(0.6,1.4),(0.6,1.4)])
 
-Tmw={}
-Tplots = [Tmw]
-clkeys = ['T_mw/T200m']
+Vcirc2={}
+clkeys = ['Vcirc2_Vc200m']
+plots = [Vcirc2]
 linestyles = ['-']
 
 for aexp in aexps :
@@ -42,48 +43,43 @@ for aexp in aexps :
                             db_dir=db_dir,
                             profiles_list=profiles_list,
                             halo_properties_list=halo_properties_list)
-
-    # print aexp
-    # print min(cldata['nu_200m'].values())
-    # print max(cldata['nu_200m'].values())
-    # continue
+    
     nu_cut_hids = nu_cut(nu=cldata['nu_200m'], threshold=nu_threshold)
 
-    for Tplot, key in zip(Tplots,clkeys) :
+    for plot, key in zip(plots,clkeys) :
         pruned_profiles = prune_dict(d=cldata[key],k=nu_cut_hids)
-        Tplot[aexp] = calculate_profiles_mean_variance(pruned_profiles)
+        plot[aexp] = calculate_profiles_mean_variance(pruned_profiles)
+    
+    pa.axes[Vcirc2ratioVc200m].plot( rbins, Vcirc2[aexp]['mean'],color=color(aexp),
+                                     ls='-',label="$z=%3.1f$" % aexp2redshift(aexp))
 
-    pa.axes[Tratio].plot( rbins, Tmw[aexp]['mean'],color=color(aexp),ls='-',
-                             label="$z=%3.1f$" % aexp2redshift(aexp))
 
-
-pa.axes[Tratio].fill_between(rbins, Tmw[0.5]['down'], Tmw[0.5]['up'], 
+pa.axes[Vcirc2ratioVc200m].fill_between(rbins, Vcirc2[0.5]['down'], Vcirc2[0.5]['up'], 
                                  color=color(0.5), zorder=0)
 
     
 for aexp in aexps :
-    for T,ls in zip(Tplots,linestyles) :
+    for V,ls in zip(plots,linestyles) :
         fractional_evolution = get_profiles_division_mean_variance(
-            mean_profile1=T[aexp]['mean'],
-            var_profile1=T[aexp]['var'],
-            mean_profile2=T[0.5]['mean'],
-            var_profile2=T[0.5]['var'],
-        )
+            mean_profile1=V[aexp]['mean'],
+            var_profile1=V[aexp]['var'],
+            mean_profile2=V[0.5]['mean'],
+            var_profile2=V[0.5]['var'],
+            )
 
-
-        pa.axes[fTz0].plot( rbins, fractional_evolution['mean'],
-                            color=color(aexp),ls=ls) 
+        pa.axes[fVcz1].plot( rbins, fractional_evolution['mean'],
+                             color=color(aexp),ls=ls) 
                                                  
-pa.axes[Tratio].annotate(nu_label, xy=(.75, .75), xytext=(.3, 1.1),
-                         )
-pa.axes[Tratio].tick_params(labelsize=12)
-pa.axes[Tratio].tick_params(labelsize=12)
-pa.axes[fTz0].set_yticks(arange(0.6,1.4,0.2))
+
+pa.axes[Vcirc2ratioVc200m].annotate(nu_label, xy=(.75, .75), xytext=(.3, 1.3))
+pa.axes[Vcirc2ratioVc200m].tick_params(labelsize=12)
+pa.axes[Vcirc2ratioVc200m].tick_params(labelsize=12)
+pa.axes[fVcz1].set_yticks(arange(0.6,1.4,0.2))
 
 matplotlib.rcParams['legend.handlelength'] = 0
 matplotlib.rcParams['legend.numpoints'] = 1
 matplotlib.rcParams['legend.fontsize'] = 12
-pa.set_legend(axes_label=Tratio,ncol=3,loc='best', frameon=False)
-pa.color_legend_texts(axes_label=Tratio)
+pa.set_legend(axes_label=Vcirc2ratioVc200m,ncol=3,loc='upper right', frameon=False)
+pa.color_legend_texts(axes_label=Vcirc2ratioVc200m)
 
 pa.savefig()
