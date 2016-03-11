@@ -7,6 +7,7 @@ from L500analysis.derived_fields.collections.circular_velocity.derived_field_fun
     import *
 from L500analysis.derived_fields.collections.temperature.derived_field_functions \
     import *
+from L500analysis.utils.constants import mu,mp,km2cm
 
 def _Ttot_vcirc2_ratio(data, *args, **kwargs) :
     
@@ -51,7 +52,7 @@ def calculate_Ttot_vcirc2_ratio(input_data) :
                                   radius_kpc=d['Rmid'][hid])
 
         Ttot_Vcirc2_ratio[hid] = make_profile(x=d['Rscaled'][hid],
-                                              y=Ttot/Vcirc2)
+                                              y=Ttot/Vcirc2/mu/mp/km2cm**2)
 
     return Ttot_Vcirc2_ratio
 

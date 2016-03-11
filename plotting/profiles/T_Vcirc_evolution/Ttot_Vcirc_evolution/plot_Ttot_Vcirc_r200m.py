@@ -32,7 +32,7 @@ pa = PlotAxes(figname='Ttot_Vcirc2_ratio_200m',
               axes_labels=[Ttot_Vcirc2_ratio,fXz1],
               xlabel=r"$R/R_{200m}$",
               xlim=(0.2,2),
-              ylims=[(0.1,1.19),(0.6,1.4)])
+              ylims=[(0.1,1),(0.6,1.4)])
 
 TratioV2={}
 plots=[TratioV2]
@@ -47,32 +47,33 @@ for aexp in aexps :
     for p, key in zip(plots,clkeys) :
         p[aexp] = calculate_profiles_mean_variance(cldata[key])
 
-    pa.axes[Tratio].plot( rbins, TratioV2[aexp]['mean'],color=color(aexp),ls='-',
-                             label="$z=%3.1f$" % aexp2redshift(aexp))
+    pa.axes[Ttot_Vcirc2_ratio].plot( rbins, TratioV2[aexp]['mean'],
+                                     color=color(aexp),ls='-',
+                                     label="$z=%3.1f$" % aexp2redshift(aexp))
 
 
-pa.axes[Tratio].fill_between(rbins, Tmw[0.5]['down'], Tmw[0.5]['up'], 
-                                 color=color(0.5), zorder=0)
+pa.axes[Ttot_Vcirc2_ratio].fill_between(rbins, TratioV2[0.5]['down'], 
+                                        TratioV2[0.5]['up'], 
+                                        color=color(0.5), zorder=0)
 
     
 for aexp in aexps :
 
-    for p,ls in zip(plots,linestyles) :
-        fractional_evolution = get_profiles_division_mean_variance(
-            mean_profile1=p[aexp]['mean'],
-            var_profile1=p[aexp]['var'],
-            mean_profile2=p[0.5]['mean'],
-            var_profile2=p[0.5]['var'],
+    fractional_evolution = get_profiles_division_mean_variance(
+        mean_profile1=p[aexp]['mean'],
+        var_profile1=p[aexp]['var'],
+        mean_profile2=p[0.5]['mean'],
+        var_profile2=p[0.5]['var'],
         )
 
-        pa.axes[p].plot( rbins, fractional_evolution['mean'],
-                            color=color(aexp),ls=ls) 
+    pa.axes[fXz1].plot( rbins, fractional_evolution['mean'],
+                            color=color(aexp),ls='-') 
                                                  
 
-pa.axes[Tratio].tick_params(labelsize=12)
-pa.axes[Tratio].tick_params(labelsize=12)
-pa.axes[fTz0].set_yticks(arange(0.6,1.4,0.2))
-pa.set_legend(axes_label=Tratio,ncol=3,loc='best', frameon=False)
-pa.color_legend_texts(axes_label=Tratio)
+pa.axes[Ttot_Vcirc2_ratio].tick_params(labelsize=12)
+pa.axes[Ttot_Vcirc2_ratio].tick_params(labelsize=12)
+pa.axes[fXz1].set_yticks(arange(0.6,1.4,0.2))
+pa.set_legend(axes_label=Ttot_Vcirc2_ratio,ncol=3,loc='best', frameon=False)
+pa.color_legend_texts(axes_label=Ttot_Vcirc2_ratio)
 
 pa.savefig()
