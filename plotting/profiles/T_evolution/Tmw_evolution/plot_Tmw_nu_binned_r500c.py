@@ -10,7 +10,7 @@ from derived_field_functions import *
 
 color = matplotlib.cm.afmhot_r
 aexps = [1.0,0.9,0.8,0.7,0.6,0.5,0.45,0.4,0.35]
-nu_threshold = [2.,2.3]
+nu_threshold = [2.3, 2.7] # 1, 1.7, 2.3, 2.7
 nu_label = r"%0.1f$\leq\nu_{500c}\leq$%0.1f"%(nu_threshold[0],nu_threshold[1])
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
