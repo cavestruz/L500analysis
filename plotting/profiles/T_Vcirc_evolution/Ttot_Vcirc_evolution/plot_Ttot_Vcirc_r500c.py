@@ -18,25 +18,25 @@ profiles_list = ['T_mw', 'r_mid',
                  'vel_gas_rad_std', 'vel_gas_tan_std',
                  'vel_gas_rad_avg', 'vel_gas_tan_avg',
                  'M_dark', 'M_star', 'M_gas',
-                 'Ttot_Vcirc2_ratio_200m',
-                 'R/R200m']
+                 'Ttot_Vcirc2_ratio_500c',
+                 'R/R500c']
 
-halo_properties_list=['r200m','M_total_200m','nu_200m']
+halo_properties_list=['r500c','M_total_500c','nu_500c']
 
 
 Ttot_Vcirc2_ratio=r"$\Xi=T_{tot}/V^2_{circ}$"
 fXz1=r"$\Xi/\Xi(z=1)$"
 
-pa = PlotAxes(figname='Ttot_Vcirc2_ratio_200m',
+pa = PlotAxes(figname='Ttot_Vcirc2_ratio_500c',
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
               axes_labels=[Ttot_Vcirc2_ratio,fXz1],
-              xlabel=r"$R/R_{200m}$",
-              xlim=(0.2,2),
+              xlabel=r"$R/R_{500c}$",
+              xlim=(0.2,5),
               ylims=[(0.2,0.8),(0.6,1.4)])
 
 TratioV2={}
 plots=[TratioV2]
-clkeys=['Ttot_Vcirc2_ratio_200m']
+clkeys=['Ttot_Vcirc2_ratio_500c']
 
 for aexp in aexps :
     cldata = GetClusterData(aexp=aexp,db_name=db_name,
