@@ -1,4 +1,5 @@
 import matplotlib
+from numpy import log10
 from matplotlib.pyplot import *
 from matplotlib.ticker import AutoMinorLocator
 from collections import OrderedDict
@@ -32,15 +33,15 @@ class PlotAxes :
         self.axes = OrderedDict(zip(axes_labels,self.axes))
 
         self._legend = {}
-
+        self.xlog,self.ylog=xlog,ylog
         # Do figure formatting
-        self._setlogformat(xlog,ylog)
         self._setxlim(xlim)
         self._setylims(ylims)
         self._setxlabel(xlabel)
         if use_axes_labels : 
             self._setylabel(axes_labels)
 
+        self._setlogformat(self.xlog,self.ylog)
 
     def _setylabel(self, axes_labels) :
 
@@ -81,12 +82,12 @@ class PlotAxes :
                 if yl : self._make_ylogscale(axis)
                     
     def _make_ylogscale(self,axis) :
-        axis.yaxis.set_major_formatter(MyLogFormatter())
         axis.set_yscale('log')
+        axis.yaxis.set_major_formatter(MyLogFormatter())
 
     def _make_xlogscale(self,axis) :
-        axis.xaxis.set_major_formatter(MyLogFormatter())
         axis.set_xscale('log')
+        axis.xaxis.set_major_formatter(MyLogFormatter())
         
 
     def set_legend(self,axes_label=0, **kwargs) :

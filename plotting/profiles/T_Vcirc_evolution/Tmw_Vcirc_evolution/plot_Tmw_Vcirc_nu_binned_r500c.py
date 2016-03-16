@@ -13,7 +13,7 @@ matplotlib.rcParams['legend.handlelength'] = 0
 matplotlib.rcParams['legend.numpoints'] = 1
 matplotlib.rcParams['legend.fontsize'] = 12
 aexps = [1.0,0.9,0.8,0.7,0.6,0.5,0.45,0.4,0.35]
-nu_threshold = [2.3, 2.7] # 1, 1.7, 2.3, 2.7
+nu_threshold = [1, 1.7] # 1, 1.7, 2.3, 2.7
 nu_label = r"%0.1f$\leq\nu_{500c}\leq$%0.1f"%(nu_threshold[0],nu_threshold[1])
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
@@ -28,7 +28,7 @@ profiles_list = ['T_mw', 'r_mid',
 halo_properties_list=['r500c','M_total_500c','nu_500c']
 
 
-Tmw_Vcirc2_ratio=r"$\Xi=T_{tot}/V^2_{circ}$"
+Tmw_Vcirc2_ratio=r"$\Xi=T_{mw}/V^2_{circ}$"
 fXz1=r"$\Xi/\Xi(z=1)$"
 
 pa = PlotAxes(figname='Tmw_Vcirc2_ratio_500c_nu%0.1f'%nu_threshold[0],
