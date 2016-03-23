@@ -2,11 +2,15 @@
 lin-log plots, etc.'''
 
 from numpy import *
-from L500analysis.utils.constants import rbins
+from L500analysis.utils.constants import rbins, linear_rbins
 
 def make_profile(profile_rbins=rbins, x=None,y=None) :
 
     return 10**interp(profile_rbins, x, log10(y))
+
+def make_profile_linear(profile_rbins=linear_rbins, x=None,y=None) :
+    
+    return interp(profile_rbins, x, y)
 
 class MakeProfile :
     def __init__(self, numbins=99, x=None, y=None, xlog=True, ylog=True) :

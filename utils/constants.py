@@ -7,6 +7,7 @@ mue = 1.14
 Msun2g = 1.9891e33
 Mpc2cm = 3.08567758e24 
 kpc2cm = Mpc2cm/1e3 
+km2m = 1e3
 km2cm = 1e5
 cm2km = 1/km2cm
 
@@ -34,3 +35,4 @@ denconvert = hubble*hubble*Msun2g/(Mpc2cm/1000.0)**3
 
 
 rbins = 10**np.arange(np.log10(0.01),np.log10(8.0),0.05)
+linear_rbins = 10.**np.arange(-1,0.7,0.002)
