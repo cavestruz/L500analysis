@@ -12,6 +12,14 @@ def make_profile_linear(profile_rbins=linear_rbins, x=None,y=None) :
     
     return interp(profile_rbins, x, y)
 
+def calculate_dv(rin=None,rout=None,r=None) :
+    '''Given radii in a sphere, calculates differential volume bins'''
+    if rin != None and rout != None: 
+        return 4.*pi*(rout-rin)**3./3.
+    else : 
+        return 4.*pi*concatenate((r[:1],diff(r)))**3./3.
+
+
 class MakeProfile :
     def __init__(self, numbins=99, x=None, y=None, xlog=True, ylog=True) :
         self.num_bins = numbins

@@ -18,10 +18,10 @@ profiles_list = ['T_mw', 'r_mid',
                  'T_mw/T200m',
                  'R/R200m']
 
-halo_properties_list=['r200m','M_total_200m','nu_200m']
+halo_properties_list=['r200m','M_total_200m']
 
 
-Tratio=r"$\tilde{T}=T(R)/T_{200m}$"
+Tratio=r"$\tilde{T}=T_{mw}/T_{200m}$"
 fTz0=r"$\tilde{T}/\tilde{T}(z=1)$"
 
 pa = PlotAxes(figname='Tmw_r200m',

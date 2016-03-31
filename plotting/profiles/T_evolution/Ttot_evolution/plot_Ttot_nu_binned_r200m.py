@@ -10,7 +10,7 @@ from derived_field_functions import *
 
 color = matplotlib.cm.afmhot_r
 aexps = [1.0,0.9,0.8,0.7,0.6,0.5,0.45,0.4,0.35]
-nu_threshold = [2.5, 3.6]# 1.3, 2, 2.5, 3.6 
+nu_threshold = [1.3,2.]# 1.3, 2, 2.5, 3.6 
 nu_label = r"%0.1f$\leq\nu_{200m}\leq$%0.1f"%(nu_threshold[0],nu_threshold[1])
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
@@ -24,7 +24,7 @@ profiles_list = ['T_mw', 'r_mid',
 halo_properties_list=['r200m','M_total_200m','nu_200m']
 
 
-Tratio=r"$\tilde{T}=T(R)/T_{200m}$"
+Tratio=r"$\tilde{T}=T_{tot}/T_{200m}$"
 fTz0=r"$\tilde{T}/\tilde{T}(z=1)$"
 
 pa = PlotAxes(figname='Ttot_r200m_nu%0.1f'%nu_threshold[0],

@@ -32,15 +32,16 @@ def calculate_Ez(aexp=None,redshift=None,
 def calculate_rhoc(aexp=None,
                    OmM=const.omega_m,
                    OmL=const.omega_l) :
-
-    Ez = calculate_Ez(aexp, OmM, OmL)
+    '''g/cm^3'''
+    Ez = calculate_Ez(aexp=aexp, OmM=OmM, OmL=OmL)
 
     return const.rhoc_0 * Ez**2
 
 def calculate_rhom(aexp=None, 
                    OmM=const.omega_m) :
+    '''g/cm^3'''
     
-    return const.rho_0 * OmM / aexp**3
+    return const.rhoc_0 * OmM / aexp**3
 
 def calculate_Omz(aexp=None,OmM=const.omega_m,
                   OmL=const.omega_l) :

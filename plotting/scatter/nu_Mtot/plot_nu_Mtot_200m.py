@@ -37,6 +37,11 @@ for aexp in aexps :
                         color=color(aexp),
                         label="$z=%3.1f$" % aexp2redshift(aexp))
 
+pa.axes[nu].axhline(y=1.3)
+pa.axes[nu].axhline(y=2.)
+pa.axes[nu].axhline(y=2.5)
+pa.axes[nu].axhline(y=3.6)
+
 pa.axes[nu].tick_params(labelsize=12)
 #pa.axes[nu].set_yticks(arange(0.6,1.4,0.2))
 pa.set_legend(axes_label=nu,ncol=3,loc='best', frameon=False)

@@ -25,7 +25,7 @@ hubble = 0.7
 H_0 = 100.0*1.0e5/Mpc2cm*hubble
 #from h^2Msun/kpc^3 to g/cm^3                               
 
-rhoc_0 = (3.0/(8.0*np.pi*gravc))*H_0*H_0 / Msun2g * (kpc2cm**3.0) # h^2Msun/kpc^3
+rhoc_0 = (3.0/(8.0*np.pi*gravc))*H_0*H_0 # g/cm^3 (?)
 delta_c = 1.1686
 power_spectrum_index_n = 0.96 # P(k) \propto k^n                                 
 sigma_8 = 0.820

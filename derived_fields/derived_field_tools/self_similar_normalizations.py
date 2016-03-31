@@ -109,7 +109,7 @@ def calculate_rho_normalization(aexp=None, delta=None,
                                 OmL=constants.omega_l,
                                 **kwargs) :
     ''' 
-    Returns self similar value of density in g/cm^3
+    Returns self similar value of density in hubble**2 Msun/kpc^3
     respect to overdensity $\delta_{critical}$ or $\delta_{mean}$
  
     kwargs 
@@ -119,29 +119,9 @@ def calculate_rho_normalization(aexp=None, delta=None,
 
     delta_type = delta[-1]
     delta_value = float(delta[:-1])
-
-    self_similar_normalization_input_crit = {
-        'overdensity_ratio': delta_value,
-        'overdensity_power': 1.,
-        'normalization_fit': 2.775e2,
-        'mass_1e15': 1.,
-        'mass_power': 1.,
-        'redshift_dependence': calculate_Ez(aexp=aexp, OmM=OmM, OmL=OmL),
-        'redshift_dependence_power': 2.
-        }
-
-    self_similar_normalization_input_mean = {
-        'overdensity_ratio': delta_value,
-        'overdensity_power': 1.,
-        'normalization_fit': 2.775e2*OmM,
-        'mass_1e15': 1.,
-        'mass_power': 1.,
-        'redshift_dependence': aexp,
-        'redshift_dependence_power': -3.
-        }
     
-    self_similar_normalization_input = {'c':self_similar_normalization_input_crit,
-                                        'm':self_similar_normalization_input_mean
+    self_similar_normalization_function = {'c':calculate_rhoc,
+                                           'm':calculate_rhom
                                             }
 
-    return _self_similar_normalization(**self_similar_normalization_input[delta_type])
+    return delta_value*self_similar_normalization_function[delta_type](aexp=aexp)
