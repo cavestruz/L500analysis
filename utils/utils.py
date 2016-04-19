@@ -13,6 +13,13 @@ def aexp2redshift(aexp=None) :
 
     return max(1./float(aexp) - 1, 0.0)
 
+def redshift2aexp(redshift=None) :
+    '''aexp conversion'''
+
+    return 1./( 1.+float(redshift) )
+
+
+
 def check_redshift_kwargs(aexp=None, redshift=None) :
     if redshift == None : return aexp2redshift(aexp)
     elif aexp != None :
