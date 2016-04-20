@@ -1,10 +1,11 @@
 from L500analysis.derived_fields.derived_fields import *
 from L500analysis.derived_fields.derived_field_functions import *
-
+from L500analysis.derived_fields.derived_field_tools.integrated_halo_properties \
+    import CalculateHaloProperties as CHP
 
 def _radial_normalization(data,*args,**kwargs) :
 
-    r_delta = kwargs['r_delta']
+    r_delta = kwargs['delta']
 
     return {'profile':data.profiles['r_mid'],
             'normalization':data.halo_properties[r_delta]}
