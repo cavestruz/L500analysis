@@ -78,7 +78,7 @@ for axes_label,delta,xloc in zip(axes_labels,deltas,text_xlocs) :
     pa.axes[axes_label].set_yticks(arange(0.8,1.4,0.2))
     pa.axes[axes_label].text(xloc,1.2,'$\\Delta='+delta+'$')
 
-pa.axes[axes_labels[1]].set_ylabel("$\\tilde{T}_{\\Delta}/\\tilde{T}(z=0)$",
+pa.axes[axes_labels[1]].set_ylabel("$\\tilde{T}_{mw}/\\tilde{T}_{mw}(z=0)$",
                                    fontsize="xx-large")
 pa.set_legend(axes_label=axes_labels[0],ncol=3,loc='upper right', frameon=False)
 pa.color_legend_texts(axes_label=axes_labels[0])
