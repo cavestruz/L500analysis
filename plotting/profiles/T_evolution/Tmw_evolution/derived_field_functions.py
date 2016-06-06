@@ -4,7 +4,7 @@ from L500analysis.plotting.profiles.T_evolution.Tall_evolution.derived_field_fun
     import *
 from L500analysis.derived_fields.derived_field_tools.self_similar_normalizations \
     import calculate_T_normalization
-from L500analysis.plotting.profiles.tools.radial_normalizations import *
+# from L500analysis.plotting.profiles.tools.radial_normalizations import *
 from L500analysis.utils.constants import K2keV
 from L500analysis.plotting.profiles.tools.make_profile import make_profile
 
