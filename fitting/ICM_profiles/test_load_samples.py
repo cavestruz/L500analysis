@@ -1,6 +1,9 @@
 ''' 
-Test the linear regression functionality from scipy on the temperature profiles
-Ultimate "mini" goal: Predict T/T200m vs. R/R200m as a function of nu and z.
+Test the linear regression functionality from scipy on the temperature
+profiles, then also the density profiles (or just Yx)
+
+Ultimate "mini" goal: Predict T/T200m at a given R/R200m (e.g. rbins)
+as a function of nu and z.
 ''' 
 
 import load_samples_dimensions as lsd
@@ -8,12 +11,12 @@ from sklearn import linear_model
 from sklearn.cross_validation import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
-
+from L500analysis.utils.constants import rbins, linear_rbins
 
 cldata = lsd.load_sample()
 
 def collect_samples(data=None, features_keys=None, targets_keys=None, 
-                    radial_bin=88,
+                    radial_bin=len(rbins)/2,
                     test_split=True,train_size=0.9) :
     ''' 
     Need to get the cluster data into training and testing subsamples
@@ -37,7 +40,7 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
     hids = cldata['halo_ids']
     feature_samples = np.array([ [cldata[key][hid] for key in features_keys] \
                                      for hid in hids])
-
+    print 'targets_keys', targets_keys
     target_samples = np.array([[cldata[key][hid][radial_bin] \
                                     for key in targets_keys] \
                                     for hid in hids])
@@ -45,10 +48,10 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
     if test_split :
         train_test_samples = train_test_split(feature_samples,target_samples,
                                               train_size=train_size)
-        return {'data_X_train':train_test[0],
-                'data_X_test':train_test[1],
-                'data_y_train':train_test[2],
-                'data_y_test':train_test[3]
+        return {'data_X_train':train_test_samples[0],
+                'data_X_test':train_test_samples[1],
+                'data_y_train':train_test_samples[2],
+                'data_y_test':train_test_samples[3]
                 }
         
     else :
@@ -59,7 +62,7 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
 def fit_samples(data_X_train=None, data_y_train=None, 
                 data_X_test=None, data_y_test=None) :
     '''
-    Step 1: For a single z and nu, get predicted T/T200m at given R/R200m value
+    Step 1: For a single z and nu, get predicted T/T200m at given R/R200m value (e.g. rbins)
     Need a training X and y to run regression.fit, then can compare with the test.
      |  fit(self, X, y, n_jobs=1)
      |      Fit linear model.
@@ -92,8 +95,9 @@ def fit_samples(data_X_train=None, data_y_train=None,
 
     # Plot outputs                                                                            
     plt.scatter(data_X_test, data_y_test,  color='black')
+    plt.scatter(data_X_train, data_y_train, color='blue')
     plt.plot(data_X_test, regr.predict(data_X_test), color='blue',
-             linewidth=3)
+             linewidth=2)
 
     plt.xticks(())
     plt.yticks(())
@@ -105,3 +109,7 @@ if __name__ == "__main__"  :
                               targets_keys=['T_mw/T200m'],
                               test_split=True)
     fit_samples(**samples)
+
+### EDITING HERE: Got it working for ONE radius, need to do this for
+### all AND need to do this for different redshifts/aexp (not sure
+### which one yet...)
