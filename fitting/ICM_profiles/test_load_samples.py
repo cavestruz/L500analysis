@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from L500analysis.utils.constants import rbins, linear_rbins
 
-cldata = lsd.load_sample()
+loaded_sample = lsd.load_sample()
 
 def collect_samples(data=None, features_keys=None, targets_keys=None, 
                     radial_bin=len(rbins)/2,
@@ -36,15 +36,24 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
      |      train_size : Fraction of data to keep as training.
     '''
 
-    cldata = data
-    hids = cldata['halo_ids']
-    feature_samples = np.array([ [cldata[key][hid] for key in features_keys] \
-                                     for hid in hids])
-    print 'targets_keys', targets_keys
-    target_samples = np.array([[cldata[key][hid][radial_bin] \
-                                    for key in targets_keys] \
-                                    for hid in hids])
+    cld = data
+    aexps = cld.keys()
+    hids = {aexp: cld[aexp]['halo_ids'] for aexp in aexps}
+    feature_samples = []
+    target_samples = []
+    for aexp in aexps :
+        feature_samples += [[cld[aexp][key][hid] \
+                                 for key in features_keys]+[aexp] 
+                            for hid in hids[aexp]]
+        target_samples += [[cld[aexp][key][hid][radial_bin] \
+                                for key in targets_keys] \
+                               for hid in hids[aexp] ]
 
+    feature_samples = np.array(feature_samples)
+    target_samples = np.array(target_samples)
+    print feature_samples.size
+    print target_samples.size
+    exit
     if test_split :
         train_test_samples = train_test_split(feature_samples,target_samples,
                                               train_size=train_size)
@@ -92,11 +101,10 @@ def fit_samples(data_X_train=None, data_y_train=None,
     # Explained variance score: 1 is perfect prediction                                       
     print('Variance score: %.2f' % regr.score(data_X_test, data_y_test))
 
-
     # Plot outputs                                                                            
-    plt.scatter(data_X_test, data_y_test,  color='black')
-    plt.scatter(data_X_train, data_y_train, color='blue')
-    plt.plot(data_X_test, regr.predict(data_X_test), color='blue',
+    plt.scatter(data_X_test[:,1], data_y_test,  color='black')
+    plt.scatter(data_X_train[:,1], data_y_train, color='blue')
+    plt.plot(data_X_test[:,1], regr.predict(data_X_test), color='blue',
              linewidth=2)
 
     plt.xticks(())
@@ -105,7 +113,8 @@ def fit_samples(data_X_train=None, data_y_train=None,
     plt.show()
 
 if __name__ == "__main__"  :
-    samples = collect_samples(data=cldata, features_keys=['nu_200m'], 
+    samples = collect_samples(data=loaded_sample, 
+                              features_keys=['nu_200m'], 
                               targets_keys=['T_mw/T200m'],
                               test_split=True)
     fit_samples(**samples)
