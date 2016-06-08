@@ -12,11 +12,11 @@ from sklearn.cross_validation import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
 from L500analysis.utils.constants import rbins, linear_rbins
-
+from plot_parameters import plot_model_2d, plot_model_3d
 loaded_sample = lsd.load_sample()
 
 def collect_samples(data=None, features_keys=None, targets_keys=None, 
-                    radial_bin=len(rbins)/2,
+                    radial_bin=len(rbins)*19/20,
                     test_split=True,train_size=0.9) :
     ''' 
     Need to get the cluster data into training and testing subsamples
@@ -51,9 +51,7 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
 
     feature_samples = np.array(feature_samples)
     target_samples = np.array(target_samples)
-    print feature_samples.size
-    print target_samples.size
-    exit
+
     if test_split :
         train_test_samples = train_test_split(feature_samples,target_samples,
                                               train_size=train_size)
@@ -68,11 +66,16 @@ def collect_samples(data=None, features_keys=None, targets_keys=None,
                 'data_y_train':target_samples
                 }
 
-def fit_samples(data_X_train=None, data_y_train=None, 
-                data_X_test=None, data_y_test=None) :
+def fit_samples(**kw) :
     '''
     Step 1: For a single z and nu, get predicted T/T200m at given R/R200m value (e.g. rbins)
     Need a training X and y to run regression.fit, then can compare with the test.
+    | fit_samples 
+    |       Parameters:
+    | data_X_train, data_y_train, 
+    | data_X_test, data_y_test
+    |
+
      |  fit(self, X, y, n_jobs=1)
      |      Fit linear model.
      |      
@@ -83,42 +86,50 @@ def fit_samples(data_X_train=None, data_y_train=None,
      |      
      |      y : numpy array of shape [n_samples, n_targets]
      |          Target values
-
+     |
+     |  Returns: LinearRegression object that has been trained on the 
+     |           training set,
+     |           statistics,
+     |           the training and the test data.
     '''
 
     # Create the linear regression object
     regr = linear_model.LinearRegression()
     
     # Train the model using the training set
-    regr.fit(data_X_train, data_y_train)
+    regr.fit(kw['data_X_train'], kw['data_y_train'])
 
-    # The coefficients                                                                        
-    print('Coefficients: \n', regr.coef_)
-    # The mean square error                                                                   
-    print("Residual sum of squares: %.2f"
-          % np.mean((regr.predict(data_X_test) - data_y_test) ** 2))
+    # The coefficients                                                                   
+    coefficients = regr.coef_
+    # The mean square error                                                         
+    residual_sum_of_sq = \
+        np.mean((regr.predict(kw['data_X_test']) - kw['data_y_test']) ** 2)
+    # Explained variance score: 1 is perfect prediction                                 
+    variance_score = regr.score(kw['data_X_test'], kw['data_y_test'])
 
-    # Explained variance score: 1 is perfect prediction                                       
-    print('Variance score: %.2f' % regr.score(data_X_test, data_y_test))
+    return dict({'trained_model' : regr,
+                 'coefficients' : coefficients,
+                 'residual_sum_of_sq' : residual_sum_of_sq,
+                 'variance_score' : variance_score},
+                **kw
+                )
 
-    # Plot outputs                                                                            
-    plt.scatter(data_X_test[:,1], data_y_test,  color='black')
-    plt.scatter(data_X_train[:,1], data_y_train, color='blue')
-    plt.plot(data_X_test[:,1], regr.predict(data_X_test), color='blue',
-             linewidth=2)
 
-    plt.xticks(())
-    plt.yticks(())
-
-    plt.show()
 
 if __name__ == "__main__"  :
     samples = collect_samples(data=loaded_sample, 
-                              features_keys=['nu_200m'], 
-                              targets_keys=['T_mw/T200m'],
+                              features_keys=['nu_500c'], 
+                              targets_keys=['T_mw/T500c'],
                               test_split=True)
-    fit_samples(**samples)
-
-### EDITING HERE: Got it working for ONE radius, need to do this for
-### all AND need to do this for different redshifts/aexp (not sure
-### which one yet...)
+    model_results = fit_samples(**samples)
+    
+    plot_model_2d( data_X_test=model_results['data_X_test'], 
+                   data_y_test=model_results['data_y_test'],
+                   data_X_train=model_results['data_X_train'], 
+                   data_y_train=model_results['data_y_train'],
+                   trained_model=model_results['trained_model'],
+                   xlabel='nu_500c',
+                   ylabel='Tmw/T500c(R/R500c=3)',
+                   figname='r500c_3',
+                   )
+    
