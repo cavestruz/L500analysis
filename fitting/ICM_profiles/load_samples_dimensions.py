@@ -18,7 +18,7 @@ halo_properties_list=['r200m','M_total_200m','nu_200m',
 db_name = 'L500_NR_0'
 db_dir = '/home/babyostrich/Documents/Repos/L500analysis/'
 
-def load_sample() :
+def load_sample(aexps=aexps) :
     cld = {}
     for aexp in aexps :
         GCD = GetClusterData(aexp=aexp,db_name=db_name,

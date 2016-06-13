@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from L500analysis.utils.constants import rbins, linear_rbins
 from plot_parameters import plot_model_2d, plot_model_3d
-loaded_sample = lsd.load_sample()
+
 
 def collect_samples(data=None, features_keys=None, targets_keys=None, 
                     radial_bin=len(rbins)*19/20,
@@ -117,6 +117,8 @@ def fit_samples(**kw) :
 
 
 if __name__ == "__main__"  :
+
+    loaded_sample = lsd.load_sample()
     samples = collect_samples(data=loaded_sample, 
                               features_keys=['nu_500c'], 
                               targets_keys=['T_mw/T500c'],
