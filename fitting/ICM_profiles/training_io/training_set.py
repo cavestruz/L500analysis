@@ -87,19 +87,21 @@ class CollectSamples :
     def _populate_sample( self, aexp, sample='Features' ) :
         samples = []
         for key in self.keys[sample] :
-            if self._check_if_profiles(aexp,key) :
-                self._collect_radial_profile(aexp, key, samples) 
+            if self._check_if_profile(aexp,key) :
+                self._collect_radial_prop(aexp, key, samples) 
             else : self._collect_halo_prop(aexp, key, samples) 
         return samples
 
     def _collect_halo_prop( self, aexp, key, samples ) :
-        samples.append( self.data[aexp][key] )
+        for hid in self._halo_ids[aexp] :
+            samples.append( self.data[aexp][key][hid] )
 
     def _collect_radial_prop( self, aexp, key, samples ) :
         self._check_radial_bin()
 
         try :
-            samples.append( self.data[aexp][key][self.radial_bin] )
+            for hid in self._halo_ids[aexp] :
+                samples.append( self.data[aexp][key][hid][self.radial_bin] )
         except IndexError :
             print('Try setting different radial bin with self.set_radial_bin(radial_bin)') 
             

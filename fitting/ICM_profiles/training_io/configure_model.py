@@ -1,6 +1,7 @@
 '''
 Uses parsed data from the config file to create a model output
-directory to initialize the model building
+directory to initialize the model building.  Write to a .cfg file in
+that directory with all of the initialization info.
 '''
 
 import os, ConfigParser
@@ -14,9 +15,9 @@ def make_output( parsed_info ) :
             print('making %s',directory)
             os.makedirs(directory)
     inidir = parsed_info['OutputInfo']['modeldir']
-    write_config(parsed_info, inidir)
+    _write_config(parsed_info, inidir)
 
-def write_config(parsed_info, inidir) :
+def _write_config(parsed_info, inidir) :
     config = ConfigParser.RawConfigParser()
     
     for section in parsed_info.keys() :
@@ -26,3 +27,4 @@ def write_config(parsed_info, inidir) :
     
     with open(inidir+'/init.cfg', 'wb') as configfile :
         config.write(configfile)
+
