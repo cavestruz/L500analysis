@@ -7,7 +7,6 @@ def match_nearest(estimates=None, exactvals=None):
     return [ min(exactvals, key=lambda x : abs(float(x)-float(estimate)))
              for estimate in estimates ]
 
-
 def aexp2redshift(aexp=None) :
     '''Redshift conversion, no redshifts above below 0'''
 

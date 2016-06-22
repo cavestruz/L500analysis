@@ -11,6 +11,7 @@ class MyConfigParser :
         '''Returns a dictionary of config parameters'''
         self.cp = ConfigParser.ConfigParser()
         self.cp.read(inifile)
+        
         self.parsed_info = defaultdict(dict)
         self.get_asis_info()
         self.get_list_info()

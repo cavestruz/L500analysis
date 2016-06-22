@@ -10,9 +10,9 @@ def make_output( parsed_info ) :
     '''Creates the directory for the output model, prints the config info to that as well'''
     for k, directory in parsed_info['OutputInfo'].iteritems() :
         if os.path.exists(directory) : 
-            print('%s exists',directory)
+            print('%s exists'%directory)
         else :
-            print('making %s',directory)
+            print('making %s'%directory)
             os.makedirs(directory)
     inidir = parsed_info['OutputInfo']['modeldir']
     _write_config(parsed_info, inidir)

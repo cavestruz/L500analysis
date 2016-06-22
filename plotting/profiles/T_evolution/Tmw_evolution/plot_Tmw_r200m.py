@@ -28,7 +28,7 @@ pa = PlotAxes(figname='Tmw_r200m',
               axes=[[0.15,0.4,0.80,0.55],[0.15,0.15,0.80,0.24]],
               axes_labels=[Tratio,fTz0],
               xlabel=r"$R/R_{200m}$",
-              xlim=(0.2,2),
+              xlims=[(0.2,2)],
               ylims=[(0.1,1.19),(0.6,1.4)])
 
 Tmw={}

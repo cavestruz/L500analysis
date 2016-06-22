@@ -20,7 +20,7 @@ class PlotAxes :
                  use_axes_labels=True,
                  xlabel=None, 
                  xlog=False, ylog=False,
-                 xlim=None,
+                 xlims=None,
                  ylims=None
                  ) :
         self.figdir=figdir
@@ -35,12 +35,12 @@ class PlotAxes :
         self._legend = {}
         self.xlog,self.ylog=xlog,ylog
         # Do figure formatting
-        self._setxlim(xlim)
+        self._setxlims(xlims)
         self._setylims(ylims)
         self._setxlabel(xlabel)
         if use_axes_labels : 
             self._setylabel(axes_labels)
-
+            
         self._setlogformat(self.xlog,self.ylog)
 
     def _setylabel(self, axes_labels) :
@@ -54,10 +54,10 @@ class PlotAxes :
         print("Saving in "+self.figdir+self.figname+self.figformat)
         self.figure.savefig(self.figdir+self.figname+self.figformat)
                  
-    def _setxlim(self,xlim) :
-        if xlim == None : return
+    def _setxlims(self,xlims) :
+        if xlims == None : return
 
-        for axis in self.axes.values() :
+        for axis,xlim in zip(self.axes.values(),xlims) :
             axis.set_xlim(xlim)
 
     def _setylims(self,ylims) :
@@ -68,8 +68,8 @@ class PlotAxes :
 
     def _setxlabel(self,xlabel) :
 
-        for axis in self.axes.values()[:-1] :
-            axis.get_xaxis().set_ticklabels([])
+        # for axis in self.axes.values()[:-1] :
+        #     axis.get_xaxis().set_ticklabels([])
         if xlabel == None : return
         self.axes.values()[-1].set_xlabel(xlabel,fontsize='xx-large')        
         

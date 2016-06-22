@@ -8,7 +8,7 @@ from L500analysis.data_io.get_cluster_data import GetClusterData
 # derived fields?
 from L500analysis.plotting.profiles.T_evolution.Tmw_evolution.derived_field_functions\
     import *
-
+import numpy as np
 
 def load_sample(parsed_info) :
     cld = {}
@@ -42,6 +42,7 @@ class CollectSamples :
      |      features : list of lists with shape [n_samples, n_features] for Training
      |      targets : list of lists with shape [n_samples, n_targets] for Training
      '''    
+
     def __init__( self, parsed_info ) :
         features_keys = parsed_info['TrainingInfo']['features_keys']
         targets_keys = parsed_info['TrainingInfo']['targets_keys']
@@ -56,7 +57,11 @@ class CollectSamples :
         self._hids = {aexp: self.data[aexp]['halo_ids'] for aexp in aexps}
 
     def _check_if_profile( self, aexp, key ) :
-        prop = self.data[aexp][key]
+        try : 
+            _hid = self.data[aexp][key].keys()[0]
+            prop = self.data[aexp][key][_hid]
+        except AttributeError :
+            return False
 
         try : return (len(prop) > 1)
         except TypeError : return False
@@ -74,6 +79,15 @@ class CollectSamples :
     def _init_sample( self, sample_type ) :
         self.sample[sample_type] = []
         
+    def features( self ) :
+        try : return np.array(self.sample['Features'])
+        except ValueError : print('Did you run self.get_features()?')
+
+    def targets( self ) :
+        try : return np.array(self.sample['Targets'])
+        except ValueError : print('Did you run self.get_targets()?')
+
+
     def get_features( self ) :
         self._init_sample('Features')
         for aexp in self.data.keys() :
@@ -88,19 +102,23 @@ class CollectSamples :
         samples = []
         for key in self.keys[sample] :
             if self._check_if_profile(aexp,key) :
+                print sample,':',key,' is a radial prop'
                 self._collect_radial_prop(aexp, key, samples) 
-            else : self._collect_halo_prop(aexp, key, samples) 
+            else :
+                print sample,':',key,' is a halo prop'
+                self._collect_halo_prop(aexp, key, samples) 
         return samples
 
     def _collect_halo_prop( self, aexp, key, samples ) :
-        for hid in self._halo_ids[aexp] :
-            samples.append( self.data[aexp][key][hid] )
+        for hid in self._hids[aexp] :
+            try : samples.append( self.data[aexp][key][hid] )
+            except IndexError : samples.append( self.data[aexp][key] )                 
 
     def _collect_radial_prop( self, aexp, key, samples ) :
         self._check_radial_bin()
 
         try :
-            for hid in self._halo_ids[aexp] :
+            for hid in self._hids[aexp] :
                 samples.append( self.data[aexp][key][hid][self.radial_bin] )
         except IndexError :
             print('Try setting different radial bin with self.set_radial_bin(radial_bin)') 

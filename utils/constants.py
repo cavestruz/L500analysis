@@ -36,5 +36,5 @@ sigma_8 = 0.820
 denconvert = hubble*hubble*Msun2g/(Mpc2cm/1000.0)**3
 
 
-rbins = 10**np.arange(np.log10(0.01),np.log10(8.0),0.05)
+rbins = 10**np.arange(np.log10(0.01),np.log10(4.0),0.05)
 linear_rbins = 10.**np.arange(-1.,4.,0.002)

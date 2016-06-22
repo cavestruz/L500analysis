@@ -44,11 +44,13 @@ class GetClusterData :
             return self.df.halo_properties[field]
         elif field=='halo_ids' :
             return self.ldb.halo_ids
+        elif field=='aexp' :
+            return self.ldb.aexp
         else :
             raise KeyError('%s not a valid field' % name)
 
     def keys(self) :
-        return self.available_profiles_list+self.derived_profiles_list+\
-            self.available_halo_properties_list+self.derived_halo_properties_list+\
-            ['halo_ids']
+        return self.ldb.available_profiles_list+self.ldb.derived_profiles_list+\
+            self.ldb.available_halo_properties_list+self.ldb.derived_halo_properties_list+\
+            ['halo_ids']+['aexp']
     

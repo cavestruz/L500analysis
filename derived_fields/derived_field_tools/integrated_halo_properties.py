@@ -19,10 +19,20 @@ class CalculateHaloProperties :
 
         self.delta=delta
         self.aexp=aexp
+        self._test_profiles(physical_radial_profile, mass_enclosed_profile)
         self._calculate_interpolated_enclosed_density(physical_radial_profile=physical_radial_profile,
                                                       mass_enclosed_profile=mass_enclosed_profile)
         self._calculate_cutoff_density()
         self._get_virial_indices()
+
+    def _test_profiles(self,physical_radial_profile,mass_enclosed_profile) :
+        try :
+            assert( len(physical_radial_profile) == len(mass_enclosed_profile) )
+        except : 
+            print physical_radial_profile
+            print mass_enclosed_profile
+            raise AssertionError('unequal length profiles, cannot calculate halo property')
+
 
     def _calculate_cutoff_density(self) :
         self.cutoff_density = calculate_cutoff_background_density(delta=self.delta, aexp=self.aexp)
@@ -30,7 +40,8 @@ class CalculateHaloProperties :
     def _calculate_interpolated_enclosed_density(self,
                                     physical_radial_profile=None,
                                     mass_enclosed_profile=None) :
-        self.interpolated_radius = mp.make_profile_linear(profile_rbins=constants.linear_rbins,x=physical_radial_profile,y=physical_radial_profile)
+
+        self.interpolated_radius = constants.linear_rbins
         self.interpolated_mass_enclosed = mp.make_profile_linear(profile_rbins=constants.linear_rbins,x=physical_radial_profile,y=mass_enclosed_profile)
         self.interpolated_enclosed_density = self.interpolated_mass_enclosed / (4./3. * np.pi * self.interpolated_radius**3)
 

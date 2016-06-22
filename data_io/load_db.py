@@ -9,13 +9,13 @@ class LoadDataBase :
                  profiles_list=None, 
                  halo_properties_list=None) :
         '''
-        kwargs
-        -------
-        aexp: optional kwarg, list of aexps, does not need to be exact
-        db_name: e.g. "L500_NR_0"
-        db_dir: best to specify absolute path of database
-        profiles_list: available and derived profile fields
-        halo_properties_list: available and derived halo properties fields
+        |        Parameters
+        |        -------
+        |        aexp: optional kwarg, list of aexps, does not need to be exact
+        |        db_name: e.g. "L500_NR_0"
+        |        db_dir: best to specify absolute path of database
+        |        profiles_list: available and derived profile fields
+        |        halo_properties_list: available and derived halo properties fields
         '''
 
         print("Loading database, executing queries... ")
