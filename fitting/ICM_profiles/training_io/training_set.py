@@ -76,16 +76,28 @@ class CollectSamples :
         '''Radial bin must be an integer in the range of the length of any profile'''
         self.radial_bin = radial_bin
 
+    def _reshape_sample( self, array, sample_type='Features' ) :
+        '''
+        Get the sample in either:
+        [n_samples, n_features] for Training data and                                                  
+        [n_samples, n_targets] for Target values  
+        '''
+        n_sample_type = len(self.keys[sample_type])
+        n_samples = len(array)/n_sample_type
+        shape = (n_samples, n_sample_type)
+        print array.reshape(shape)
+        return array.reshape(shape) 
+
     def _init_sample( self, sample_type ) :
         self.sample[sample_type] = []
         
     def features( self ) :
-        try : return np.array(self.sample['Features'])
-        except ValueError : print('Did you run self.get_features()?')
+        return self._reshape_sample(np.array(self.sample['Features']),sample_type='Features')        
+        #except ValueError : print('Did you run self.get_features()?')
 
     def targets( self ) :
-        try : return np.array(self.sample['Targets'])
-        except ValueError : print('Did you run self.get_targets()?')
+        return self._reshape_sample(np.array(self.sample['Targets']),sample_type='Targets')
+        #except ValueError : print('Did you run self.get_targets()?')
 
 
     def get_features( self ) :
