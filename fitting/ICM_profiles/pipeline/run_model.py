@@ -16,6 +16,3 @@ CS = ts.CollectSamples(MCP.parsed_info)
 CS.set_radial_bin(30)
 CS.get_targets()
 CS.get_features()
-# !!! Still need to reshape the features and targets !!!
-print CS.targets()
-print CS.features()

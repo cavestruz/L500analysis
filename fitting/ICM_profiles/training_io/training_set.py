@@ -136,5 +136,3 @@ class CollectSamples :
             print('Try setting different radial bin with self.set_radial_bin(radial_bin)') 
             
 
-        
-
