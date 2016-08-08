@@ -13,6 +13,8 @@ cm.make_output(MCP.parsed_info)
 
 # Load training samples, get the features and targets to run the model
 CS = ts.CollectSamples(MCP.parsed_info)
+
+#  Loop over radial bins for whole model
 CS.set_radial_bin(30)
 CS.get_targets()
 CS.get_features()

@@ -5,16 +5,23 @@ class TrainModel :
     '''                                                                                                                                              
      |      Parameters                                                                                                                               
      |      ----------                                                                                                                               
-     |      ??? :                                                                                                                      
-     |                                                                                                                                               
+     |      data_X_train : numpy array or sparse matrix of shape [n_samples,n_features]
+     |                     ( Training data )                                                                                                                              
+     |      data_y_train : numpy array of shape [n_samples, n_targets]
+     |                     ( Target values )
+     |
      |      Attributes                                                                                                                               
      |      ----------                                                                                                                               
-     |      ???? : 
+     |      trained_model :  Trained linear regression model that will output a target value on other values that are not necessarily in the training data 
+     |      coefficients : Coefficients of the regression
+     |      residual : Residual of the fit
+     |      variance : Variance score on the regression
      |                                                                                                                                               
      '''
 
     def __init__( self, **kw ) :
-        pass
+        '''This expects data_X_train, data_y_train, data_X_test, data_y_test'''
+        self._kw = kw
 
 
     def _test_split( self, train_size ) :
@@ -27,16 +34,16 @@ class TrainModel :
         regr = linear_model.LinearRegression()
     
         # Train the model using the training set                                                                                                     
-        regr.fit(kw['data_X_train'], kw['data_y_train'])
+        self.trained_model = regr.fit(self._kw['data_X_train'], self._kw['data_y_train'])
         
         # The coefficients                                                                                                                           
-        coefficients = regr.coef_
+        self.coefficients = regr.coef_
 
         # The mean square error                                                                                                                      
-        residual_sum_of_sq = \
-            np.mean((regr.predict(kw['data_X_test']) - kw['data_y_test']) ** 2)
+        self.residual_sum_of_sq = \
+            np.mean((regr.predict(self._kw['data_X_test']) - self._kw['data_y_test']) ** 2)
 
         # Explained variance score: 1 is perfect prediction                                                                                          
-        variance_score = regr.score(kw['data_X_test'], kw['data_y_test'])
+        self.variance_score = regr.score(self._kw['data_X_test'], self._kw['data_y_test'])
 
        
