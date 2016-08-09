@@ -1,6 +1,8 @@
 import L500analysis.fitting.ICM_profiles.training_io.parse_config as pc
 import L500analysis.fitting.ICM_profiles.training_io.configure_model as cm
 import L500analysis.fitting.ICM_profiles.training_io.training_set as ts
+import L500analysis.fitting.ICM_profiles.training_io.training_steps as tst
+
 
 inifile = '/home/babyostrich/Documents/Repos/L500analysis/fitting/ICM_profiles/config_ini/temperature_test.ini'
 
@@ -18,3 +20,8 @@ CS = ts.CollectSamples(MCP.parsed_info)
 CS.set_radial_bin(30)
 CS.get_targets()
 CS.get_features()
+
+# Train the model based on the data targets and features
+tst.TrainModel(features=CS.features,targets=CS.targets)
+
+

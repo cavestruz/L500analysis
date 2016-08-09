@@ -90,25 +90,18 @@ class CollectSamples :
 
     def _init_sample( self, sample_type ) :
         self.sample[sample_type] = []
-        
-    def features( self ) :
-        return self._reshape_sample(np.array(self.sample['Features']),sample_type='Features')        
-        #except ValueError : print('Did you run self.get_features()?')
-
-    def targets( self ) :
-        return self._reshape_sample(np.array(self.sample['Targets']),sample_type='Targets')
-        #except ValueError : print('Did you run self.get_targets()?')
-
 
     def get_features( self ) :
         self._init_sample('Features')
         for aexp in self.data.keys() :
             self.sample['Features'] += self._populate_sample(aexp, sample='Features')
+        self.features = self._reshape_sample(np.array(self.sample['Features']),sample_type='Features')        
 
     def get_targets( self ) :
         self._init_sample('Targets')
         for aexp in self.data.keys() :
             self.sample['Targets'] += self._populate_sample(aexp, sample='Targets')
+        self.targets = self._reshape_sample(np.array(self.sample['Targets']),sample_type='Targets')
 
     def _populate_sample( self, aexp, sample='Features' ) :
         samples = []
