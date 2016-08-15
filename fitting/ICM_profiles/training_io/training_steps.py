@@ -63,3 +63,15 @@ class TrainModel :
                                          self.train_test_samples['data_y_test'])
 
        
+def get_trained_model(collected_samples, ibin_radial=None) :
+    '''
+    Return a model that has been trained on collected samples.  This
+    can be a model for integrated quantities or radial quantities.
+    '''
+    cs = collected_samples
+    if ibin_radial != None :
+        cs.set_radial_bin(ibin_radial)
+    cs.get_targets()
+    cs.get_features()
+    return TrainModel(features=cs.features, targets=cs.targets)
+    
