@@ -24,6 +24,7 @@ trained_models = [tst.get_trained_model(CS, ibin_radial=i).trained_model for i i
 X_aexps = [0.95, 0.75]
 X_nu500c = [1.7, 2.5]
 
-predictions = pd.PredictData( trained_models,  X_aexps, X_nu500c ) 
+predicted_data = pd.PredictData( trained_models,  X_aexps, X_nu500c ) 
 
-# NEED TO EASILY PLOT PREDICTIONS
+# Plot predicted data
+predicted_data.plot(group_by=1, color_by=0, lw=2.0)

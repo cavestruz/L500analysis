@@ -1,6 +1,9 @@
 from itertools import product
 from collections import defaultdict
 import numpy as np
+import matplotlib.pyplot as plt
+from L500analysis.utils.constants import rbins
+
 
 class PredictData :
     '''
@@ -43,6 +46,37 @@ class PredictData :
 
         self.predictions = { feature : np.array(self.predictions[feature]) for feature in self.features }
 
-    def plot( self, ) :
-        ''' Automatically plot predicted data '''
-        pass
+    def plot( self, group_by=0, color_by=1, cmap_name='afmhot_r', legend=True, **kw) :
+        ''' Automatically plot predicted data 
+        |    Parameters
+        |    ----------
+        |    group_by : the index of the feature we wish to group co-plotted values by 
+        |               (index in the predictions tuple)
+        |    color_by : the index of the feature we wish to color by, and label in the legend
+        |    Takes in regular plotting kwargs
+        |    
+        '''
+        
+        cmap = plt.get_cmap(cmap_name)
+
+        # Create as many figures as unique group_by values
+        figure_keys = set([feature[group_by] for feature in self.predictions.keys()])
+        Norm_color = max([feature[color_by] for feature in self.predictions.keys()])
+
+        figures = defaultdict(lambda: plt.figure())
+
+        for features, predictions in self.predictions.iteritems() :
+            figures[features[group_by]].gca().plot(rbins, predictions, 
+                                                   color=cmap(features[color_by]/Norm_color), 
+                                                   label=features[color_by], **kw)
+
+        # if legend :
+        #     for key in figures.keys() :
+        #         handles, labels = figures[key].gca().get_legend_handles_labels()
+        #         print handles
+        #         print labels
+        #         sorted_legend = [ (h, l) for (l, h) in sorted(zip( labels, handles )) ]
+        #         figures[key].gca().legend(*sorted_legend)
+
+        self.figures = figures
+        

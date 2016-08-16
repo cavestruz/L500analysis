@@ -15,7 +15,9 @@ class TrainModel :
      |
      |      Attributes                                                                                                                               
      |      ----------                                                                                                                               
-     |      trained_model :  Trained linear regression model that will output a target value on other values that are not necessarily in the training data 
+     |      trained_model :  Trained linear regression model that will output a target 
+     |                       value on other values that are not necessarily in the 
+     |                       training data 
      |      coefficients : Coefficients of the regression
      |      residual : Residual of the fit
      |      variance : Variance score on the regression
@@ -65,7 +67,7 @@ class TrainModel :
        
 def get_trained_model(collected_samples, ibin_radial=None) :
     '''
-    Return a model that has been trained on collected samples.  This
+    Return a TrainModel instance that has been trained on collected samples.  This
     can be a model for integrated quantities or radial quantities.
     '''
     cs = collected_samples
@@ -75,3 +77,9 @@ def get_trained_model(collected_samples, ibin_radial=None) :
     cs.get_features()
     return TrainModel(features=cs.features, targets=cs.targets)
     
+def get_trained_model_profile( collected_samples, rbins ) :
+    '''
+    Return a list of trained models for every radial point in the profiles
+    '''
+
+    return [ get_trained_model(collected_samples, ibin_radial=i).trained_model for i in range(len(rbins)) ]
