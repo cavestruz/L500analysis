@@ -73,3 +73,6 @@ target/
 # zipped and tarball files
 *.gz
 *.tar
+
+# hidden files
+.*
